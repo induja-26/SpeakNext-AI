@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>English Learning - SpeakNext AI</title>
+
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+
+    <header>
+        <h2>SpeakNext</h2>
+
+        <nav>
+    <a href="../index.html">Home</a>
+    <a href="daily-practice.html">Daily Practice</a>
+    <a href="english.html">English</a>
+    <a href="hr-prep.html">HR Prep</a>
+    <a href="technical.html">Technical</a>
+    <a href="mock-interview.html">Mock Interview</a>
+    <a href="ai-chat.html">AI Chat</a>
+    <a href="dashboard.html">Dashboard</a>
+</nav>
+    </header>
+
+
+    <!-- MAIN -->
+
+    <main>
+
+        <section class="english-container">
+
+            <h1>Improve Your English</h1>
+
+            <p class="english-intro">
+                Build your vocabulary, grammar and communication skills
+                through simple daily lessons.
+            </p>
+
+
+            <!-- VOCABULARY -->
+
+            <div class="english-card">
+
+                <span class="english-label">
+                    Word of the Day
+                </span>
+
+                <h2 id="wordTitle">
+                    Articulate
+                </h2>
+
+                <p>
+                    <strong>Meaning:</strong>
+                    Able to express ideas clearly and effectively.
+                </p>
+
+                <p>
+                    <strong>Example:</strong>
+                    She was able to articulate her ideas clearly
+                    during the interview.
+                </p>
+
+                <button onclick="showWord()">
+                    Learn Another Word
+                </button>
+
+            </div>
+
+
+            <!-- GRAMMAR -->
+
+            <div class="english-card">
+
+                <span class="english-label">
+                    Grammar Practice
+                </span>
+
+                <h2>Choose the Correct Sentence</h2>
+
+                <p id="grammarQuestion">
+                    She ___ to college every day.
+                </p>
+
+                <div class="grammar-options">
+
+                    <button onclick="checkAnswer('go')">
+                        Go
+                    </button>
+
+                    <button onclick="checkAnswer('goes')">
+                        Goes
+                    </button>
+
+                    <button onclick="checkAnswer('going')">
+                        Going
+                    </button>
+
+                </div>
+
+                <p id="grammarResult"></p>
+
+            </div>
+
+
+            <!-- COMMUNICATION -->
+
+            <div class="english-card">
+
+                <span class="english-label">
+                    Communication Tip
+                </span>
+
+                <h2>Speak Clearly</h2>
+
+                <p>
+                    Try to speak slowly and clearly. Use simple sentences
+                    and avoid unnecessary filler words such as "um",
+                    "actually" and "like".
+                </p>
+
+                <button onclick="showTip()">
+                    Show Practice Tip
+                </button>
+
+                <p id="communicationTip"></p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <h2>SpeakNext AI</h2>
+
+        <p>
+            Developed by S. Induja and Udhayasri
+        </p>
+
+        <p>
+            Department of BCA
+        </p>
+
+        <p>
+            KSR College Of Arts And Science For Women
+        </p>
+
+        <p>
+            © 2026 SpeakNext
+        </p>
+
+    </footer>
+
+
+    <script src="../js/script.js"></script>
+
+</body>
+</html>
