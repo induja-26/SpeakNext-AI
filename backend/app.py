@@ -13,22 +13,78 @@ DATABASE = os.path.join(
 )
 
 
+# =========================
+# DATABASE CONNECTION
+# =========================
+
 def get_db_connection():
     conn = sqlite3.connect(DATABASE)
     conn.row_factory = sqlite3.Row
     return conn
 
 
+# =========================
+# INITIALIZE DATABASE
+# =========================
+
+def initialize_database():
+
+    os.makedirs(
+        os.path.dirname(DATABASE),
+        exist_ok=True
+    )
+
+    conn = get_db_connection()
+
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            email TEXT UNIQUE NOT NULL,
+            password TEXT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS progress (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER,
+            activity TEXT NOT NULL,
+            score INTEGER DEFAULT 0,
+            completed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users(id)
+        )
+    """)
+
+    conn.commit()
+    conn.close()
+
+
+# Create database tables when server starts
+initialize_database()
+
+
+# =========================
+# HOME
+# =========================
+
 @app.route("/")
 def home():
+
     return jsonify({
         "status": "success",
         "message": "SpeakNext AI Backend is Running!"
     })
 
 
+# =========================
+# API TEST
+# =========================
+
 @app.route("/api/test")
 def test():
+
     return jsonify({
         "status": "success",
         "message": "Frontend and Backend connection is working!"
@@ -49,6 +105,7 @@ def register():
     password = data.get("password")
 
     if not name or not email or not password:
+
         return jsonify({
             "status": "error",
             "message": "All fields are required."
@@ -62,6 +119,7 @@ def register():
     ).fetchone()
 
     if existing_user:
+
         conn.close()
 
         return jsonify({
@@ -70,7 +128,10 @@ def register():
         }), 409
 
     conn.execute(
-        "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
+        """
+        INSERT INTO users (name, email, password)
+        VALUES (?, ?, ?)
+        """,
         (name, email, password)
     )
 
@@ -96,6 +157,7 @@ def login():
     password = data.get("password")
 
     if not email or not password:
+
         return jsonify({
             "status": "error",
             "message": "Email and password are required."
@@ -104,19 +166,25 @@ def login():
     conn = get_db_connection()
 
     user = conn.execute(
-        "SELECT id, name, email, password FROM users WHERE email = ?",
+        """
+        SELECT id, name, email, password
+        FROM users
+        WHERE email = ?
+        """,
         (email,)
     ).fetchone()
 
     conn.close()
 
     if user is None:
+
         return jsonify({
             "status": "error",
             "message": "User not found."
         }), 404
 
     if user["password"] != password:
+
         return jsonify({
             "status": "error",
             "message": "Invalid password."
@@ -174,6 +242,7 @@ def add_progress():
     score = data.get("score", 0)
 
     if not user_id or not activity:
+
         return jsonify({
             "status": "error",
             "message": "User ID and activity are required."
@@ -208,7 +277,11 @@ def get_progress(user_id):
     conn = get_db_connection()
 
     result = conn.execute(
-        "SELECT COUNT(*) AS count FROM progress WHERE user_id = ?",
+        """
+        SELECT COUNT(*) AS count
+        FROM progress
+        WHERE user_id = ?
+        """,
         (user_id,)
     ).fetchone()
 
@@ -229,9 +302,13 @@ def chat():
 
     data = request.get_json()
 
-    user_message = data.get("message", "").strip().lower()
+    user_message = data.get(
+        "message",
+        ""
+    ).strip().lower()
 
     if not user_message:
+
         return jsonify({
             "status": "error",
             "message": "Message is required."
@@ -304,8 +381,11 @@ def chat():
 
 
 # =========================
-# RUN SERVER
+# START SERVER
 # =========================
 
 if __name__ == "__main__":
-    app.run(debug=True)
+
+    app.run(
+        debug=True
+    )
